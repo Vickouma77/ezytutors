@@ -1,4 +1,3 @@
 [workspace]
 members = ["tutor-nodb"]
-
 resolver = "3"
