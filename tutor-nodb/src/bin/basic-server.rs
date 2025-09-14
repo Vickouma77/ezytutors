@@ -1,4 +1,4 @@
-use actix_web::{web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{App, HttpResponse, HttpServer, Responder, web};
 use std::io;
 
 fn general_routes(cfg: &mut web::ServiceConfig) {
@@ -12,11 +12,8 @@ async fn health_check_handler() -> impl Responder {
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
-    HttpServer::new(|| {
-        App::new()
-            .configure(general_routes)
-    })
-    .bind("127.0.0.1:3000")?
-    .run()
-    .await
+    HttpServer::new(|| App::new().configure(general_routes))
+        .bind("127.0.0.1:3000")?
+        .run()
+        .await
 }

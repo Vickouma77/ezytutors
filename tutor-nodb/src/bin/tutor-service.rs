@@ -1,8 +1,8 @@
-use actix_web::{web, App, HttpServer};
+use actix_web::{App, HttpServer, web};
 use std::sync::Mutex;
 
-use tutor_nodb::state::AppState;
 use tutor_nodb::routes::*;
+use tutor_nodb::state::AppState;
 
 #[actix_rt::main]
 async fn main() -> Result<(), std::io::Error> {
