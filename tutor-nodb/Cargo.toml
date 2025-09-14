@@ -5,12 +5,16 @@ authors = ["prestone"]
 edition = "2024"
 default-run = "tutor-service"
 
-[dependencies]
-actix-web = "4.11.0"
-actix-rt = "2.11.0"
-
 [[bin]]
 name = "basic-server"  # Name of the binary
 
 [[bin]]
 name = "tutor-service"
+
+[lib]
+name = "tutor_nodb"  # Name of the library
+path = "src/lib.rs"
+
+[dependencies]
+actix-web = "4.11.0"
+actix-rt = "2.11.0"
