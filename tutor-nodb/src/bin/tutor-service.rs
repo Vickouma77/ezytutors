@@ -16,6 +16,7 @@ async fn main() -> Result<(), std::io::Error> {
         App::new()
             .app_data(shared_data.clone())
             .configure(general_routes)
+            .configure(course_routes)
     })
     .bind("127.0.0.1:3000")?
     .run()
