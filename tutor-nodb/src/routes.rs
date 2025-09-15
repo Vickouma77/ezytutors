@@ -6,5 +6,6 @@ pub fn general_routes(cfg: &mut web::ServiceConfig) {
 }
 
 pub fn course_routes(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::scope("/course")).route("/", web::post().to(new_course));
+    cfg.service(web::scope("/course"))
+        .route("/", web::post().to(new_course));
 }

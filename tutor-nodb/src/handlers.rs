@@ -16,7 +16,10 @@ pub async fn health_check_handler(app_state: web::Data<AppState>) -> HttpRespons
     HttpResponse::Ok().json(&response)
 }
 
-pub async fn new_course(new_course: web::Json<Course>, app_state: web::Data<AppState>) -> HttpResponse {
+pub async fn new_course(
+    new_course: web::Json<Course>,
+    app_state: web::Data<AppState>,
+) -> HttpResponse {
     println!("Received new course");
     let course_count_for_user = app_state
         .courses
