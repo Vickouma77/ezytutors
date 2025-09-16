@@ -43,12 +43,13 @@ pub async fn new_course(
 
 pub async fn get_course_for_tutor(
     app_state: web::Data<AppState>,
-    params: web::Path<i32>
+    params: web::Path<i32>,
 ) -> HttpResponse {
     let tutor_id: i32 = params.into_inner();
-    
+
     let filtered_courses = app_state
-        .courses.lock()
+        .courses
+        .lock()
         .unwrap()
         .iter()
         .filter(|course| course.tutor_id == tutor_id)
