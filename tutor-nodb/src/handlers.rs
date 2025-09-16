@@ -64,5 +64,5 @@ mod tests {
 
         let res = new_course(course, app_state).await;
         assert_eq!(res.status(), StatusCode::OK);
-    } 
+    }
 }
