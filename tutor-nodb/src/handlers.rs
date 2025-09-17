@@ -63,6 +63,27 @@ pub async fn get_course_for_tutor(
     }
 }
 
+pub async fn get_course_detail(
+    app_state: web::Data<AppState>,
+    params: web::Path<(i32, i32)>,
+) -> HttpResponse {
+    let (tutor_id, course_id) = params.into_inner();
+    let selected_course = app_state
+        .courses
+        .lock()
+        .unwrap()
+        .clone()
+        .into_iter()
+        .find(|x| x.tutor_id == tutor_id && x.course_id == Some(course_id))
+        .ok_or("course not found");
+
+    if let Ok(course) = selected_course {
+        HttpResponse::Ok().json(course)
+    } else {
+        HttpResponse::Ok().json("course not found".to_string())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
