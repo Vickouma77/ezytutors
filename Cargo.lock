@@ -1339,6 +1339,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "tutor-db"
+version = "0.1.0"
+
+[[package]]
 name = "tutor-nodb"
 version = "0.1.0"
 dependencies = [
