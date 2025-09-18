@@ -3,7 +3,7 @@ use actix_web::web;
 use crate::iter2::{get_course_detail, get_course_for_tutor, health_check_handler, post_new_course};
 
 pub fn general_routes(cfg: &mut web::ServiceConfig) {
-    cfg.route("/", web::get().to(health_check_handler));
+    cfg.route("/health", web::get().to(health_check_handler));
 }
 
 pub fn course_routes(cfg: &mut web::ServiceConfig) {
