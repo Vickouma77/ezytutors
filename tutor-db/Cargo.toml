@@ -13,7 +13,7 @@ sqlx = { version = "0.8.6", default-features = false, features = ["postgres","ru
 serde = { version = "1.0.225", features = ["derive"] }
 
 [[bin]]
-name = "tutor-db"
+name = "iter2"
 path = "src/bin/iter2.rs"
 
 [lib]
