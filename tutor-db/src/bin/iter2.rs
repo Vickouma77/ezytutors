@@ -1,2 +1,30 @@
+use std::{env, io, sync::Mutex};
+
+use actix_web::{App, HttpServer, web};
+use dotenv::dotenv;
+use sqlx::PgPool;
+use tutor_db::iter2::{AppState, course_routes, general_routes};
+
 #[actix_rt::main]
-async fn main() {}
+async fn main() -> io::Result<()> {
+    dotenv().ok();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not set");
+    let db_pool = PgPool::connect(&database_url).await.unwrap();
+
+    let shared_data = web::Data::new(AppState {
+        health_check_response: "Im good. You've already asked me".to_string(),
+        visit_count: Mutex::new(0),
+        db: db_pool,
+    });
+
+    HttpServer::new(move || {
+        App::new()
+            .app_data(shared_data.clone())
+            .configure(general_routes)
+            .configure(course_routes)
+    })
+    .bind("127.0.0.1")?
+    .run()
+    .await
+}

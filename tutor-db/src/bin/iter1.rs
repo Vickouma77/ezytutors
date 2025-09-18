@@ -12,14 +12,14 @@ pub struct Course {
 }
 
 #[actix_rt::main]
-async fn main() -> Result<()>{
+async fn main() -> Result<()> {
     dotenv().ok();
     let database_url = env::var("DATABASE_URL").expect("Database Url is not set");
 
     let db_pool = PgPool::connect(&database_url)
         .await
         .expect("Failed to connect to the database");
-    
+
     let course_id: i32 = env::var("COURSE_ID")
         .ok()
         .and_then(|v| v.parse().ok())
