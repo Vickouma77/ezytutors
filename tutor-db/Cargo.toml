@@ -11,3 +11,10 @@ dotenv = "0.15.0"
 openssl = { version = "0.10.73", features = ["vendored"] }
 sqlx = { version = "0.8.6", default-features = false, features = ["postgres","runtime-tokio-native-tls", "macros","chrono"]}
 serde = { version = "1.0.225", features = ["derive"] }
+
+[[bin]]
+name = "tutor-db"
+path = "src/bin/iter2.rs"
+
+[lib]
+path = "src/lib.rs"
