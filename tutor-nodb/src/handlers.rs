@@ -124,9 +124,9 @@ mod tests {
 
     #[actix_rt::test]
     async fn get_one_course_success() {
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
             courses: Mutex::new(vec![]),
         });
         let params: web::Path<(i32, i32)> = web::Path::from((1, 1));

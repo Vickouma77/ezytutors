@@ -17,7 +17,7 @@ pub async fn health_check_handler(app_state: web::Data<AppState>) -> HttpRespons
 
 pub async fn get_course_for_tutor(
     _app_state: web::Data<AppState>,
-    _params: web::Path<(i32, )>,
+    _params: web::Path<(i32,)>,
 ) -> HttpResponse {
     HttpResponse::Ok().json("Success")
 }
@@ -53,13 +53,13 @@ mod tests {
         let database_url = env::var("DATABASE_URL").expect("DATABASE URL is not set");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
 
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
-            db: pool
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            db: pool,
         });
 
-        let tutor_id: web::Path<(i32, )> = web::Path::from((1, ));
+        let tutor_id: web::Path<(i32,)> = web::Path::from((1,));
         let res = get_course_for_tutor(app_state, tutor_id).await;
 
         assert_eq!(res.status(), StatusCode::OK);
@@ -72,9 +72,9 @@ mod tests {
         let database_url = env::var("DATABASE_URL").expect("DATABASE URL is not set");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
 
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
             db: pool,
         });
 
@@ -91,9 +91,9 @@ mod tests {
         let database_url = env::var("DATABASE_URL").expect("DATABASE URL is not set");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
 
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
             db: pool,
         });
 
