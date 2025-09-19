@@ -16,5 +16,9 @@ serde = { version = "1.0.225", features = ["derive"] }
 name = "iter2"
 path = "src/bin/iter2.rs"
 
+[[bin]]
+name = "iter3"
+path = "src/bin/iter3.rs"
+
 [lib]
 path = "src/lib.rs"
