@@ -1,6 +1,6 @@
 use std::{env, io, sync::Mutex};
 
-use actix_web::{App, HttpServer, web};
+use actix_web::{middleware::Logger, web, App, HttpServer};
 use dotenv::dotenv;
 use sqlx::PgPool;
 use tutor_db::iter4::{AppState, course_routes, general_routes};
@@ -8,6 +8,8 @@ use tutor_db::iter4::{AppState, course_routes, general_routes};
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
     dotenv().ok();
+
+    env_logger::init();
 
     let database_url = env::var("DATABASE_URL").expect("DATABASE URL is not set");
     let db_pool = PgPool::connect(&database_url).await.unwrap();
@@ -19,14 +21,16 @@ async fn main() -> io::Result<()> {
     });
 
     let host_port = env::var("HOST_PORT").expect("HOST PORT is not set");
+    let bind_address = format!("127.0.0.1:{}", host_port);
 
     HttpServer::new(move || {
         App::new()
+            .wrap(Logger::default())
             .app_data(shared_data.clone())
             .configure(general_routes)
             .configure(course_routes)
     })
-    .bind(host_port)?
+    .bind(bind_address)?
     .run()
     .await
 }
