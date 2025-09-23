@@ -1,9 +1,6 @@
 use actix_web::{HttpResponse, web};
 
-use crate::{
-    iter2::AppState,
-    iter3::{Course, get_course_details_db, get_courses_for_tutor_db, post_new_course_db},
-};
+use crate::iter3::{get_course_details_db, get_courses_for_tutor_db, post_new_course_db, AppState, Course};
 
 pub async fn health_check_handler(app_state: web::Data<AppState>) -> HttpResponse {
     let health_check_response = &app_state.health_check_response;
