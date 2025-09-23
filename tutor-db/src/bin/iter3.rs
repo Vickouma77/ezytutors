@@ -1,9 +1,9 @@
 use std::{env, io, sync::Mutex};
 
-use actix_web::{middleware::Logger, web, App, HttpServer};
+use actix_web::{App, HttpServer, middleware::Logger, web};
 use dotenv::dotenv;
 use sqlx::PgPool;
-use tutor_db::iter3::{course_routes, general_routes, AppState};
+use tutor_db::iter3::{AppState, course_routes, general_routes};
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {
@@ -26,5 +26,8 @@ async fn main() -> io::Result<()> {
             .app_data(shared_data.clone())
             .configure(general_routes)
             .configure(course_routes)
-    }).bind("127.0.0.1:3000")?.run().await
+    })
+    .bind("127.0.0.1:3000")?
+    .run()
+    .await
 }
