@@ -1,13 +1,33 @@
+use std::fmt;
+
 use actix_web::{HttpResponse, error, http::StatusCode};
-use log::error;
 use serde::{Deserialize, Serialize};
 use sqlx::Error as SqlxError;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug)]
 pub enum EzytutorError {
-    DBError(String),
+    DBError(SqlxError),
     ActixError(String),
     NotFound(String),
+}
+
+impl Serialize for EzytutorError {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_str(&self.to_string())
+    }
+}
+
+impl<'de> Deserialize<'de> for EzytutorError {
+    fn deserialize<D>(_deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        // Deserialization not supported for errors
+        Err(serde::de::Error::custom("Cannot deserialize EzytutorError"))
+    }
 }
 
 #[derive(Deserialize, Serialize)]
@@ -15,31 +35,22 @@ pub struct MyErrorResponse {
     error_message: String,
 }
 
-impl std::fmt::Display for EzytutorError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl fmt::Display for EzytutorError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            EzytutorError::DBError(msg) => write!(f, "Database error: {}", msg),
+            EzytutorError::DBError(err) => write!(f, "Database error: {}", err),
             EzytutorError::ActixError(msg) => write!(f, "Internal server error: {}", msg),
             EzytutorError::NotFound(msg) => write!(f, "Not found: {}", msg),
         }
     }
 }
 
-impl EzytutorError {
-    pub fn error_response(&self) -> String {
+impl std::error::Error for EzytutorError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
-            EzytutorError::DBError(msg) => {
-                error!("Database Error occurred {:?}", msg);
-                "Database error".into()
-            }
-            EzytutorError::ActixError(msg) => {
-                error!("Server Error occurred {:?}", msg);
-                "Internal server error".into()
-            }
-            EzytutorError::NotFound(msg) => {
-                error!("Not Found Error occurred {:?}", msg);
-                msg.into()
-            }
+            EzytutorError::DBError(err) => Some(err),
+            EzytutorError::ActixError(_) => None,
+            EzytutorError::NotFound(_) => None,
         }
     }
 }
@@ -63,6 +74,6 @@ impl error::ResponseError for EzytutorError {
 
 impl From<SqlxError> for EzytutorError {
     fn from(err: SqlxError) -> Self {
-        EzytutorError::DBError(err.to_string())
+        EzytutorError::DBError(err)
     }
 }

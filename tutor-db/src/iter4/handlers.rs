@@ -1,7 +1,8 @@
 use actix_web::{HttpResponse, web};
 
 use crate::iter4::{
-    AppState, Course, get_course_details_db, get_courses_for_tutor_db, post_new_course_db,
+    AppState, Course, EzytutorError, get_course_details_db, get_courses_for_tutor_db,
+    post_new_course_db,
 };
 
 pub async fn health_check_handler(app_state: web::Data<AppState>) -> HttpResponse {
@@ -16,13 +17,13 @@ pub async fn health_check_handler(app_state: web::Data<AppState>) -> HttpRespons
 
 pub async fn get_course_for_tutor(
     app_state: web::Data<AppState>,
-    params: web::Path<(i32,)>,
-) -> HttpResponse {
-    let tutor_id = params.0;
+    params: web::Path<i32>,
+) -> Result<HttpResponse, EzytutorError> {
+    let tutor_id = params.into_inner();
 
-    let courses = get_courses_for_tutor_db(&app_state.db, tutor_id).await;
-
-    HttpResponse::Ok().json(courses)
+    get_courses_for_tutor_db(&app_state.db, tutor_id)
+        .await
+        .map(|courses| HttpResponse::Ok().json(courses))
 }
 
 pub async fn get_course_detail(

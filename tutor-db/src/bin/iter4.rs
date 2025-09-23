@@ -1,6 +1,6 @@
 use std::{env, io, sync::Mutex};
 
-use actix_web::{middleware::Logger, web, App, HttpServer};
+use actix_web::{App, HttpServer, middleware::Logger, web};
 use dotenv::dotenv;
 use sqlx::PgPool;
 use tutor_db::iter4::{AppState, course_routes, general_routes};
