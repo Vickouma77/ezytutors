@@ -1,6 +1,7 @@
-use actix_web::{error, http::StatusCode, HttpResponse};
-use serde::{Deserialize, Serialize};
+use actix_web::{HttpResponse, error, http::StatusCode};
 use log::error;
+use serde::{Deserialize, Serialize};
+use sqlx::Error as SqlxError;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub enum EzytutorError {
@@ -49,7 +50,7 @@ impl error::ResponseError for EzytutorError {
             EzytutorError::DBError(_) | EzytutorError::ActixError(_) => {
                 StatusCode::INTERNAL_SERVER_ERROR
             }
-            EzytutorError::NotFound(_) => StatusCode::NOT_FOUND
+            EzytutorError::NotFound(_) => StatusCode::NOT_FOUND,
         }
     }
 
@@ -57,5 +58,11 @@ impl error::ResponseError for EzytutorError {
         HttpResponse::build(self.status_code()).json(MyErrorResponse {
             error_message: self.to_string(),
         })
+    }
+}
+
+impl From<SqlxError> for EzytutorError {
+    fn from(err: SqlxError) -> Self {
+        EzytutorError::DBError(err.to_string())
     }
 }
