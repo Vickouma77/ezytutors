@@ -9,10 +9,10 @@ use tutor_db::iter4::{AppState, course_routes, general_routes};
 async fn main() -> io::Result<()> {
     dotenv().ok();
 
-    let database_url = env::_var("DATABASE_URL").expect("DATABASE URL is not set");
+    let database_url = env::var("DATABASE_URL").expect("DATABASE URL is not set");
     let db_pool = PgPool::connect(&database_url).await.unwrap();
 
-    let shared_data = web::Data(AppState {
+    let shared_data = web::Data::new(AppState {
         health_check_response: "I'm good. You've already asked me ".to_string(),
         visit_count: Mutex::new(0),
         db: db_pool,
