@@ -29,20 +29,21 @@ pub async fn get_course_for_tutor(
 pub async fn get_course_detail(
     app_state: web::Data<AppState>,
     params: web::Path<(i32, i32)>,
-) -> HttpResponse {
+) -> Result<HttpResponse, EzytutorError> {
     let path_params = params;
     let tutor_id: i32 = path_params.0;
     let course_id: i32 = path_params.1;
-    let course = get_course_details_db(&app_state.db, tutor_id, course_id).await;
 
-    HttpResponse::Ok().json(course)
+    get_course_details_db(&app_state.db, tutor_id, course_id)
+        .await
+        .map(|course| HttpResponse::Ok().json(course))
 }
 
 pub async fn post_new_course(
     new_course: web::Json<Course>,
     app_state: web::Data<AppState>,
-) -> HttpResponse {
-    let course = post_new_course_db(&app_state.db, new_course.into()).await;
-
-    HttpResponse::Ok().json(course)
+) -> Result<HttpResponse, EzytutorError> {
+    post_new_course_db(&app_state.db, new_course.into())
+        .await
+        .map(|course| HttpResponse::Ok().json(course))
 }
