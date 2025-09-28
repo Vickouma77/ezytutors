@@ -5,16 +5,6 @@ use crate::iter4::{
     post_new_course_db,
 };
 
-pub async fn health_check_handler(app_state: web::Data<AppState>) -> HttpResponse {
-    let health_check_response = &app_state.health_check_response;
-    let mut visit_count = app_state.visit_count.lock().unwrap();
-
-    let response = format!("{} {} times", health_check_response, visit_count);
-    *visit_count += 1;
-
-    HttpResponse::Ok().json(&response)
-}
-
 pub async fn get_course_for_tutor(
     app_state: web::Data<AppState>,
     params: web::Path<i32>,
