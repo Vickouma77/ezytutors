@@ -1,8 +1,7 @@
 use actix_web::{HttpResponse, web};
 
 use crate::iter5::{
-    AppState, Course, EzytutorError, get_course_details_db, get_courses_for_tutor_db,
-    post_new_course_db,
+    get_course_details_db, get_courses_for_tutor_db, post_new_course_db, AppState, CreateCourse, EzytutorError
 };
 
 pub async fn get_course_for_tutor(
@@ -30,10 +29,10 @@ pub async fn get_course_detail(
 }
 
 pub async fn post_new_course(
-    new_course: web::Json<Course>,
+    new_course: web::Json<CreateCourse>,
     app_state: web::Data<AppState>,
 ) -> Result<HttpResponse, EzytutorError> {
-    post_new_course_db(&app_state.db, new_course.into())
+    post_new_course_db(&app_state.db, new_course)
         .await
         .map(|course| HttpResponse::Ok().json(course))
 }
