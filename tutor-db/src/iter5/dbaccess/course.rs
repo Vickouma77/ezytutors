@@ -1,6 +1,6 @@
 use sqlx::PgPool;
 
-use crate::iter5::{Course, EzytutorError};
+use crate::iter5::{Course, CreateCourse, EzytutorError};
 
 pub async fn get_courses_for_tutor_db(
     pool: &PgPool,
@@ -54,7 +54,7 @@ pub async fn get_course_details_db(
 
 pub async fn post_new_course_db(
     pool: &PgPool,
-    new_course: Course,
+    new_course: CreateCourse,
 ) -> Result<Course, EzytutorError> {
     let course_row = sqlx::query!(
         "insert into ezy_course_c4 (
