@@ -99,7 +99,7 @@ pub async fn update_course_details_db(
         course_id
     ).fetch_one(pool)
     .await
-    .map(|_err| EzytutorError::NotFound(
+    .map_err(|_err| EzytutorError::NotFound(
         "Course id not found".into()
     ))?;
 
