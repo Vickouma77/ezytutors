@@ -1,6 +1,6 @@
 use sqlx::PgPool;
 
-use crate::iter5::{Course, CreateCourse, EzytutorError};
+use crate::iter5::{Course, CreateCourse, EzytutorError, UpdateCourse};
 
 pub async fn get_courses_for_tutor_db(
     pool: &PgPool,
@@ -84,4 +84,96 @@ pub async fn delete_course_db(
     .await?;
 
     Ok(format!("Deleted {:#?} record", course_row))
+}
+
+pub async fn update_course_details_db(
+    pool: &PgPool,
+    tutor_id: i32,
+    course_id: i32,
+    update_course: UpdateCourse,
+) -> Result<Course, EzytutorError>{
+    let current_course_row = sqlx::query_as!(
+        Course,
+        "SELECT * FROM ezy_course_c6 where tutor_id = $1 and course_id = $2",
+        tutor_id,
+        course_id
+    ).fetch_one(pool)
+    .await
+    .map(|_err| EzytutorError::NotFound(
+        "Course id not found".into()
+    ))?;
+
+    // construct the parameters to update
+    let name: String = if let Some(name) = update_course.course_name {
+        name
+    } else {
+        current_course_row.course_name
+    };
+    let description: String = if let Some(desc) = update_course.course_description {
+        desc
+    } else {
+        current_course_row.course_description.unwrap_or_default()
+    };
+    let format: String = if let Some(format) = update_course.course_format {
+        format
+    } else {
+        current_course_row.course_format.unwrap_or_default()
+    };
+    let structure: String = if let Some(structure) = update_course.course_structure {
+        structure
+    } else {
+        current_course_row.course_structure.unwrap_or_default()
+    };
+    let duration: String = if let Some(duration) = update_course.course_duration {
+        duration
+    } else {
+        current_course_row.course_duration.unwrap_or_default()
+    };
+    let level: String = if let Some(level) = update_course.course_level {
+        level
+    } else {
+        current_course_row.course_level.unwrap_or_default()
+    };
+    let language: String = if let Some(language) = update_course.course_language {
+        language
+    } else {
+        current_course_row.course_language.unwrap_or_default()
+    };
+    let price = if let Some(price) = update_course.course_price {
+        price
+    } else {
+        current_course_row.course_price.unwrap_or_default()
+    };
+
+    //SQL statement
+    let course_row = sqlx::query_as!(
+        Course,
+        "UPDATE ezy_course_c6 set course_name = $1,
+        course_description = $2, course_format = $3,
+        course_structure = $4, course_duration = $5, course_price = $6,
+        course_language = $7,
+        course_level = $8 where tutor_id = $9 and course_id = $10
+        returning tutor_id, course_id,
+        course_name, course_description, course_duration, course_level,
+        course_format,
+        course_language, course_structure, course_price, posted_time ",
+        name, 
+        description, 
+        format,
+        structure, 
+        duration, 
+        price, 
+        language,
+        level, 
+        tutor_id, 
+        course_id
+    )
+    .fetch_one(pool)
+    .await;
+
+    if let Ok(course) = course_row {
+        Ok(course)
+    } else {
+        Err(EzytutorError::NotFound("Course id not found".into()))
+    }
 }
