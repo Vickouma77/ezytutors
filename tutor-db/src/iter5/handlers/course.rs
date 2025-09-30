@@ -141,8 +141,35 @@ mod tests {
             course_structure: None,
         };
         let course_param = web::Json(new_course_msg);
-        let res = post_new_course(course_param, app_state);
+        let res = post_new_course(course_param, app_state).await.unwrap();
 
         assert_eq!(res.status(), StatusCode::OK)
+    }
+
+    #[actix_rt::test]
+    async fn update_course_success() {
+        dotenv().ok();
+        let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
+        let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
+        let app_state: web::Data<AppState> = web::Data::new(AppState { 
+            health_check_response: "".to_string(), 
+            visit_count: Mutex::new(0), 
+            db: pool, 
+        });
+        let update_course_msg = UpdateCourse {
+            course_name: Some("Course name changed".into()),
+            course_description: Some("This is yet another test course".into()),
+            course_format: None,
+            course_level: Some("Intermediate".into()),
+            course_price: None,
+            course_duration: None,
+            course_language: Some("German".into()),
+            course_structure: None,
+        };
+        let param: web::Path<(i32, i32)> = web::Path::from((1, 2));
+        let update_param = web::Json(update_course_msg);
+        let res = update_course_details(app_state,update_param, param).await.unwrap();
+
+        assert_eq!(res.status(), StatusCode::OK);
     }
 }
