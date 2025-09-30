@@ -1,5 +1,5 @@
 use actix_web::web;
-use chrono::NaiveDate;
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, sqlx::FromRow)]
@@ -14,7 +14,7 @@ pub struct Course {
     pub course_price: Option<i32>,
     pub course_language: Option<String>,
     pub course_level: Option<String>,
-    pub posted_time: Option<NaiveDate>,
+    pub posted_time: Option<NaiveDateTime>,
 }
 
 impl From<web::Json<Course>> for Course {
