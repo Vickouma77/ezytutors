@@ -172,4 +172,39 @@ mod tests {
 
         assert_eq!(res.status(), StatusCode::OK);
     }
+
+    #[ignore]
+    #[actix_rt::test]
+    async fn delete_test_success() {
+        dotenv().ok();
+        let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
+        let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
+        let app_state: web::Data<AppState> = web::Data::new(AppState { 
+            health_check_response: "".to_string(), 
+            visit_count: Mutex::new(0), 
+            db: pool, 
+        });
+        let param: web::Path<(i32, i32)> = web::Path::from((1, 5));
+        let res = delete_course(app_state, param).await.unwrap();
+        assert_eq!(res.status(), StatusCode::OK);
+    }
+
+    #[actix_rt::test]
+    async fn delete_test_failure() {
+        dotenv().ok();
+        let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
+        let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
+        let app_state: web::Data<AppState> = web::Data::new(AppState { 
+            health_check_response: "".to_string(), 
+            visit_count: Mutex::new(0), 
+            db: pool, 
+        });
+        let param: web::Path<(i32, i32)> = web::Path::from((1, 21));
+        let res = delete_course(app_state, param).await;
+
+        match res {
+            Ok(_) => println!("Something wrong"),
+            Err(err) => assert_eq!(err.status_code(), StatusCode::NOT_FOUND)
+        }
+    }
 }
