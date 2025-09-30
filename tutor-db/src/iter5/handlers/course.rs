@@ -59,7 +59,7 @@ pub async fn delete_course(
 #[cfg(test)]
 mod tests {
     use std::{env, sync::Mutex};
-    use actix_web::http::StatusCode;
+    use actix_web::{http::StatusCode, ResponseError};
     use dotenv::dotenv;
     use sqlx::PgPool;
     use super::*;
@@ -96,5 +96,25 @@ mod tests {
         let res = get_course_detail(app_state, param).await.unwrap();
 
         assert_eq!(res.status(), StatusCode::OK)
+    }
+
+    #[actix_rt::test]
+    async fn get_course_failure_test() {
+        dotenv().ok();
+        let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
+        let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
+        let app_state: web::Data<AppState> = web::Data::new(AppState { 
+            health_check_response: "".to_string(), 
+            visit_count: Mutex::new(0), 
+            db: pool, 
+        });
+
+        let param: web::Path<(i32, i32)> = web::Path::from((1, 21));
+        let res = get_course_detail(app_state, param).await;
+
+        match res {
+            Ok(_) => println!("Something is wrong"),
+            Err(err) => assert_eq!(err.status_code(), StatusCode::NOT_FOUND),
+        }
     }
 }
