@@ -1,7 +1,7 @@
 use actix_web::{HttpResponse, web};
 
 use crate::iter5::{
-    get_course_details_db, get_courses_for_tutor_db, post_new_course_db, AppState, CreateCourse, EzytutorError, UpdateCourse
+    delete_course_db, get_course_details_db, get_courses_for_tutor_db, post_new_course_db, AppState, CreateCourse, EzytutorError, UpdateCourse
 };
 
 pub async fn get_course_for_tutor(
