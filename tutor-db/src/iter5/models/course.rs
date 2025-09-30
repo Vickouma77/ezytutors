@@ -50,20 +50,19 @@ pub struct CreateCourse {
 
 impl From<web::Json<CreateCourse>> for CreateCourse {
     fn from(new_course: web::Json<CreateCourse>) -> Self {
-        CreateCourse { 
-            tutor_id: new_course.tutor_id, 
-            course_name: new_course.course_name.clone(), 
-            course_description: new_course.course_description.clone(), 
-            course_format: new_course.course_format.clone(), 
-            course_structure: new_course.course_structure.clone(), 
-            course_duration: new_course.course_duration.clone(), 
-            course_price: new_course.course_price, 
-            course_language: new_course.course_language.clone(), 
-            course_level: new_course.course_level.clone() 
+        CreateCourse {
+            tutor_id: new_course.tutor_id,
+            course_name: new_course.course_name.clone(),
+            course_description: new_course.course_description.clone(),
+            course_format: new_course.course_format.clone(),
+            course_structure: new_course.course_structure.clone(),
+            course_duration: new_course.course_duration.clone(),
+            course_price: new_course.course_price,
+            course_language: new_course.course_language.clone(),
+            course_level: new_course.course_level.clone(),
         }
     }
 }
-
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct UpdateCourse {

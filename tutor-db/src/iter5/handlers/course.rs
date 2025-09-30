@@ -1,7 +1,8 @@
 use actix_web::{HttpResponse, web};
 
 use crate::iter5::{
-    delete_course_db, get_course_details_db, get_courses_for_tutor_db, post_new_course_db, update_course_details_db, AppState, CreateCourse, EzytutorError, UpdateCourse
+    AppState, CreateCourse, EzytutorError, UpdateCourse, delete_course_db, get_course_details_db,
+    get_courses_for_tutor_db, post_new_course_db, update_course_details_db,
 };
 
 pub async fn get_course_for_tutor(
@@ -38,8 +39,8 @@ pub async fn post_new_course(
 pub async fn update_course_details(
     app_state: web::Data<AppState>,
     update_course: web::Json<UpdateCourse>,
-    params: web::Path<(i32, i32)>
-) -> Result<HttpResponse, EzytutorError>{
+    params: web::Path<(i32, i32)>,
+) -> Result<HttpResponse, EzytutorError> {
     let (tutor_id, course_id) = params.into_inner();
     update_course_details_db(&app_state.db, tutor_id, course_id, update_course.into())
         .await
@@ -48,7 +49,7 @@ pub async fn update_course_details(
 
 pub async fn delete_course(
     app_state: web::Data<AppState>,
-    params: web::Path<(i32, i32)>
+    params: web::Path<(i32, i32)>,
 ) -> Result<HttpResponse, EzytutorError> {
     let (tutor_id, course_id) = params.into_inner();
     delete_course_db(&app_state.db, tutor_id, course_id)
@@ -58,27 +59,26 @@ pub async fn delete_course(
 
 #[cfg(test)]
 mod tests {
-    use std::{env, sync::Mutex};
-    use actix_web::{http::StatusCode, ResponseError};
+    use super::*;
+    use actix_web::{ResponseError, http::StatusCode};
     use dotenv::dotenv;
     use sqlx::PgPool;
-    use super::*;
+    use std::{env, sync::Mutex};
 
     #[actix_rt::test]
     async fn get_all_courses_success() {
         dotenv().ok();
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
-            db: pool, 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            db: pool,
         });
         let tutor_id: web::Path<i32> = web::Path::from(1);
         let res = get_course_for_tutor(app_state, tutor_id).await.unwrap();
 
         assert_eq!(res.status(), StatusCode::OK);
-
     }
 
     #[actix_rt::test]
@@ -86,10 +86,10 @@ mod tests {
         dotenv().ok();
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
-            db: pool, 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            db: pool,
         });
 
         let param: web::Path<(i32, i32)> = web::Path::from((1, 2));
@@ -103,10 +103,10 @@ mod tests {
         dotenv().ok();
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
-            db: pool, 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            db: pool,
         });
 
         let param: web::Path<(i32, i32)> = web::Path::from((1, 21));
@@ -124,10 +124,10 @@ mod tests {
         dotenv().ok();
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
-            db: pool, 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            db: pool,
         });
         let new_course_msg = CreateCourse {
             tutor_id: 1,
@@ -151,10 +151,10 @@ mod tests {
         dotenv().ok();
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
-            db: pool, 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            db: pool,
         });
         let update_course_msg = UpdateCourse {
             course_name: Some("Course name changed".into()),
@@ -168,7 +168,9 @@ mod tests {
         };
         let param: web::Path<(i32, i32)> = web::Path::from((1, 2));
         let update_param = web::Json(update_course_msg);
-        let res = update_course_details(app_state,update_param, param).await.unwrap();
+        let res = update_course_details(app_state, update_param, param)
+            .await
+            .unwrap();
 
         assert_eq!(res.status(), StatusCode::OK);
     }
@@ -179,10 +181,10 @@ mod tests {
         dotenv().ok();
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
-            db: pool, 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            db: pool,
         });
         let param: web::Path<(i32, i32)> = web::Path::from((1, 5));
         let res = delete_course(app_state, param).await.unwrap();
@@ -194,17 +196,17 @@ mod tests {
         dotenv().ok();
         let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
         let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
-        let app_state: web::Data<AppState> = web::Data::new(AppState { 
-            health_check_response: "".to_string(), 
-            visit_count: Mutex::new(0), 
-            db: pool, 
+        let app_state: web::Data<AppState> = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            db: pool,
         });
         let param: web::Path<(i32, i32)> = web::Path::from((1, 21));
         let res = delete_course(app_state, param).await;
 
         match res {
             Ok(_) => println!("Something wrong"),
-            Err(err) => assert_eq!(err.status_code(), StatusCode::NOT_FOUND)
+            Err(err) => assert_eq!(err.status_code(), StatusCode::NOT_FOUND),
         }
     }
 }

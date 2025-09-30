@@ -3,7 +3,7 @@ use std::{env, io, sync::Mutex};
 use actix_web::{App, HttpServer, middleware::Logger, web};
 use dotenv::dotenv;
 use sqlx::PgPool;
-use tutor_db::iter5::{course_routes, general_routes, AppState};
+use tutor_db::iter5::{AppState, course_routes, general_routes};
 
 #[actix_rt::main]
 async fn main() -> io::Result<()> {

@@ -44,7 +44,7 @@ pub async fn post_new_course_db(
     pool: &PgPool,
     new_course: CreateCourse,
 ) -> Result<Course, EzytutorError> {
-    let course_row= sqlx::query_as!(
+    let course_row = sqlx::query_as!(
         Course,
         "insert into ezy_course_c6 (
         tutor_id, course_name, course_description,course_duration,
@@ -53,14 +53,14 @@ pub async fn post_new_course_db(
         tutor_id, course_id,course_name, course_description,
         course_duration, course_level, course_format, course_language,
         course_structure, course_price, posted_time",
-        new_course.tutor_id, 
+        new_course.tutor_id,
         new_course.course_name,
         new_course.course_description,
-        new_course.course_duration, 
+        new_course.course_duration,
         new_course.course_level,
-        new_course.course_format, 
+        new_course.course_format,
         new_course.course_language,
-        new_course.course_structure, 
+        new_course.course_structure,
         new_course.course_price
     )
     .fetch_one(pool)
@@ -72,7 +72,7 @@ pub async fn post_new_course_db(
 pub async fn delete_course_db(
     pool: &PgPool,
     tutor_id: i32,
-    course_id: i32
+    course_id: i32,
 ) -> Result<String, EzytutorError> {
     let course_row = sqlx::query_as!(
         Course,
@@ -91,17 +91,16 @@ pub async fn update_course_details_db(
     tutor_id: i32,
     course_id: i32,
     update_course: UpdateCourse,
-) -> Result<Course, EzytutorError>{
+) -> Result<Course, EzytutorError> {
     let current_course_row = sqlx::query_as!(
         Course,
         "SELECT * FROM ezy_course_c6 where tutor_id = $1 and course_id = $2",
         tutor_id,
         course_id
-    ).fetch_one(pool)
+    )
+    .fetch_one(pool)
     .await
-    .map_err(|_err| EzytutorError::NotFound(
-        "Course id not found".into()
-    ))?;
+    .map_err(|_err| EzytutorError::NotFound("Course id not found".into()))?;
 
     // construct the parameters to update
     let name: String = if let Some(name) = update_course.course_name {
@@ -157,15 +156,15 @@ pub async fn update_course_details_db(
         course_name, course_description, course_duration, course_level,
         course_format,
         course_language, course_structure, course_price, posted_time ",
-        name, 
-        description, 
+        name,
+        description,
         format,
-        structure, 
-        duration, 
-        price, 
+        structure,
+        duration,
+        price,
         language,
-        level, 
-        tutor_id, 
+        level,
+        tutor_id,
         course_id
     )
     .fetch_one(pool)
