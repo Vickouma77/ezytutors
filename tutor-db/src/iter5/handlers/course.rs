@@ -1,7 +1,7 @@
 use actix_web::{HttpResponse, web};
 
 use crate::iter5::{
-    get_course_details_db, get_courses_for_tutor_db, post_new_course_db, AppState, CreateCourse, EzytutorError
+    get_course_details_db, get_courses_for_tutor_db, post_new_course_db, AppState, CreateCourse, EzytutorError, UpdateCourse
 };
 
 pub async fn get_course_for_tutor(
@@ -19,9 +19,7 @@ pub async fn get_course_detail(
     app_state: web::Data<AppState>,
     params: web::Path<(i32, i32)>,
 ) -> Result<HttpResponse, EzytutorError> {
-    let path_params = params;
-    let tutor_id: i32 = path_params.0;
-    let course_id: i32 = path_params.1;
+    let (tutor_id, course_id) = params.into_inner();
 
     get_course_details_db(&app_state.db, tutor_id, course_id)
         .await
@@ -35,4 +33,25 @@ pub async fn post_new_course(
     post_new_course_db(&app_state.db, new_course.into())
         .await
         .map(|course| HttpResponse::Ok().json(course))
+}
+
+pub async fn update_course_details(
+    app_state: web::Data<AppState>,
+    update_course: web::Json<UpdateCourse>,
+    params: web::Path<(i32, i32)>
+) -> Result<HttpResponse, EzytutorError>{
+    let (tutor_id, course_id) = params.into_inner();
+    update_course_details_db(&app_state.db, tutor_id, course_id, update_course.into())
+        .await
+        .map(|course| HttpResponse::Ok().json(course))
+}
+
+pub async fn delete_course(
+    app_state: web::Data<AppState>,
+    params: web::Path<(i32, i32)>
+) -> Result<HttpResponse, EzytutorError> {
+    let (tutor_id, course_id) = params.into_inner();
+    delete_course_db(&app_state.db, tutor_id, course_id)
+        .await
+        .map(|res| HttpResponse::Ok().json(res))
 }
