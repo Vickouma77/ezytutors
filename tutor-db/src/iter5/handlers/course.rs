@@ -117,4 +117,32 @@ mod tests {
             Err(err) => assert_eq!(err.status_code(), StatusCode::NOT_FOUND),
         }
     }
+
+    #[ignore]
+    #[actix_rt::test]
+    async fn post_course_success() {
+        dotenv().ok();
+        let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
+        let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
+        let app_state: web::Data<AppState> = web::Data::new(AppState { 
+            health_check_response: "".to_string(), 
+            visit_count: Mutex::new(0), 
+            db: pool, 
+        });
+        let new_course_msg = CreateCourse {
+            tutor_id: 1,
+            course_name: "Third course".into(),
+            course_description: Some("This is a test course".into()),
+            course_format: None,
+            course_level: Some("Beginner".into()),
+            course_price: None,
+            course_duration: None,
+            course_language: Some("English".into()),
+            course_structure: None,
+        };
+        let course_param = web::Json(new_course_msg);
+        let res = post_new_course(course_param, app_state);
+
+        assert_eq!(res.status(), StatusCode::OK)
+    }
 }
