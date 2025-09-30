@@ -55,3 +55,29 @@ pub async fn delete_course(
         .await
         .map(|res| HttpResponse::Ok().json(res))
 }
+
+#[cfg(test)]
+mod tests {
+    use std::{env, sync::Mutex};
+    use actix_web::http::StatusCode;
+    use dotenv::dotenv;
+    use sqlx::PgPool;
+    use super::*;
+
+    #[actix_rt::test]
+    async fn get_all_courses_success() {
+        dotenv().ok();
+        let database_url = env::var("DATABASE_URL").expect("DATABASE_URL is not in the .env file");
+        let pool: PgPool = PgPool::connect(&database_url).await.unwrap();
+        let app_state: web::Data<AppState> = web::Data::new(AppState { 
+            health_check_response: "".to_string(), 
+            visit_count: Mutex::new(0), 
+            db: pool, 
+        });
+        let tutor_id: web::Path<i32> = web::Path::from(1);
+        let res = get_course_for_tutor(app_state, tutor_id).await.unwrap();
+
+        assert_eq!(res.status(), StatusCode::OK);
+
+    }
+}
