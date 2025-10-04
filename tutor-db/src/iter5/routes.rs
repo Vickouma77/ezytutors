@@ -1,7 +1,9 @@
 use actix_web::web;
 
 use crate::iter5::{
-    delete_course, delete_tutor, get_all_tutors, get_course_detail, get_course_for_tutor, get_tutor_details, health_check_handler, post_new_course, post_new_tutor, update_course_details, update_tutor_details
+    delete_course, delete_tutor, get_all_tutors, get_course_detail, get_course_for_tutor,
+    get_tutor_details, health_check_handler, post_new_course, post_new_tutor,
+    update_course_details, update_tutor_details,
 };
 
 pub fn general_routes(cfg: &mut web::ServiceConfig) {
@@ -25,10 +27,10 @@ pub fn course_routes(cfg: &mut web::ServiceConfig) {
 pub fn tutor_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/tutors")
-        .route("/", web::post().to(post_new_tutor))
-        .route("/", web::get().to(get_all_tutors))
-        .route("/{tutor_id}", web::get().to(get_tutor_details))
-        .route("/{tuto_id}", web::put().to(update_tutor_details))
-        .route("/{tutor_id}", web::delete().to(delete_tutor))
+            .route("/", web::post().to(post_new_tutor))
+            .route("/", web::get().to(get_all_tutors))
+            .route("/{tutor_id}", web::get().to(get_tutor_details))
+            .route("/{tuto_id}", web::put().to(update_tutor_details))
+            .route("/{tutor_id}", web::delete().to(delete_tutor)),
     );
 }

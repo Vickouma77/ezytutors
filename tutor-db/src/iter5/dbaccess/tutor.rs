@@ -6,9 +6,10 @@ pub async fn get_all_tutors_db(pool: &PgPool) -> Result<Vec<Tutor>, EzytutorErro
     //SQL statement
     let tutor_rows = sqlx::query!(
         "SELECT tutor_id, tutor_name, tutor_pic_url,
-        tutor_profile FROM ezy_tutor_c6")
-        .fetch_all(pool)
-        .await?;
+        tutor_profile FROM ezy_tutor_c6"
+    )
+    .fetch_all(pool)
+    .await?;
 
     let tutors: Vec<Tutor> = tutor_rows
         .iter()
@@ -26,7 +27,7 @@ pub async fn get_all_tutors_db(pool: &PgPool) -> Result<Vec<Tutor>, EzytutorErro
     }
 }
 
-pub async fn get_tutor_details_db(pool: &PgPool, tutor_id: i32) -> Result<Tutor, EzytutorError>{
+pub async fn get_tutor_details_db(pool: &PgPool, tutor_id: i32) -> Result<Tutor, EzytutorError> {
     //SQL statement
     let tutor_row = sqlx::query!(
         "SELECT tutor_id, tutor_name, tutor_pic_url,
@@ -35,14 +36,12 @@ pub async fn get_tutor_details_db(pool: &PgPool, tutor_id: i32) -> Result<Tutor,
     )
     .fetch_one(pool)
     .await
-    .map(|tutor_row|
-        Tutor {
-            tutor_id: tutor_row.tutor_id,
-            tutor_name: tutor_row.tutor_name,
-            tutor_pic_url: tutor_row.tutor_pic_url,
-            tutor_profile: tutor_row.tutor_profile,
-        }
-    )
+    .map(|tutor_row| Tutor {
+        tutor_id: tutor_row.tutor_id,
+        tutor_name: tutor_row.tutor_name,
+        tutor_pic_url: tutor_row.tutor_pic_url,
+        tutor_profile: tutor_row.tutor_profile,
+    })
     .map_err(|_err| EzytutorError::NotFound("Tutor id not found".into()))?;
 
     Ok(tutor_row)
@@ -54,7 +53,8 @@ pub async fn post_new_tutor_db(pool: &PgPool, new_tutor: NewTutor) -> Result<Tut
         "insert into ezy_tutor_c6 (
         tutor_name, tutor_pic_url, tutor_profile) values ($1,$2,$3)
         returning tutor_id, tutor_name, tutor_pic_url, tutor_profile",
-        new_tutor.tutor_name, new_tutor.tutor_pic_url,
+        new_tutor.tutor_name,
+        new_tutor.tutor_pic_url,
         new_tutor.tutor_profile
     )
     .fetch_one(pool)

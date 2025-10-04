@@ -1,13 +1,12 @@
 use actix_web::web;
 use serde::{Deserialize, Serialize};
 
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Tutor {
     pub tutor_id: i32,
     pub tutor_name: String,
     pub tutor_pic_url: String,
-    pub tutor_profile: String
+    pub tutor_profile: String,
 }
 
 #[derive(Clone, Debug, Deserialize)]

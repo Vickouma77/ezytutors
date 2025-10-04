@@ -1,4 +1,4 @@
-use actix_web::{error, http::StatusCode, HttpResponse, Result};
+use actix_web::{HttpResponse, Result, error, http::StatusCode};
 use serde::Serialize;
 use sqlx::error::Error as SQLxError;
 use std::fmt;
