@@ -4,10 +4,10 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Tutor {
-    tutor_id: i32,
-    tutor_name: String,
-    tutor_pic_url: String,
-    tutor_profile: String
+    pub tutor_id: i32,
+    pub tutor_name: String,
+    pub tutor_pic_url: String,
+    pub tutor_profile: String
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -35,11 +35,11 @@ pub struct UpdateTutor {
 }
 
 impl From<web::Json<UpdateTutor>> for UpdateTutor {
-    fn from(new_tutor: web::Json<UpdateTutor>) -> Self {
+    fn from(update_tutor: web::Json<UpdateTutor>) -> Self {
         UpdateTutor {
-            tutor_name: new_tutor.tutor_name.clone(),
-            tutor_pic_url: new_tutor.tutor_pic_url.clone(),
-            tutor_profile: new_tutor.tutor_profile.clone(),
+            tutor_name: update_tutor.tutor_name.clone(),
+            tutor_pic_url: update_tutor.tutor_pic_url.clone(),
+            tutor_profile: update_tutor.tutor_profile.clone(),
         }
     }
 }

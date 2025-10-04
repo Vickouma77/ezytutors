@@ -1,8 +1,7 @@
 use actix_web::web;
 
 use crate::iter5::{
-    delete_course, get_course_detail, get_course_for_tutor, health_check_handler, post_new_course,
-    update_course_details,
+    delete_course, delete_tutor, get_all_tutors, get_course_detail, get_course_for_tutor, get_tutor_details, health_check_handler, post_new_course, post_new_tutor, update_course_details, update_tutor_details
 };
 
 pub fn general_routes(cfg: &mut web::ServiceConfig) {
