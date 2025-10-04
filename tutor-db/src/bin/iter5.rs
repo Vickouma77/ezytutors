@@ -29,6 +29,7 @@ async fn main() -> io::Result<()> {
             .app_data(shared_data.clone())
             .configure(general_routes)
             .configure(course_routes)
+            .configure(tutor_routes)
     })
     .bind(bind_address)?
     .run()
