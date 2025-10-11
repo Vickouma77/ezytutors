@@ -1,6 +1,7 @@
 [workspace]
 members = [ 
     "tutor-db",
-    "tutor-nodb"
+    "tutor-nodb", 
+    "tutor-web-service"
 ]
 resolver = "3"
