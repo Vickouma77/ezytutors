@@ -7,7 +7,7 @@ use crate::iter5::{
 };
 
 pub fn general_routes(cfg: &mut web::ServiceConfig) {
-    cfg.route("/helath", web::get().to(health_check_handler));
+    cfg.route("/health", web::get().to(health_check_handler));
 }
 
 pub fn course_routes(cfg: &mut web::ServiceConfig) {
@@ -30,7 +30,7 @@ pub fn tutor_routes(cfg: &mut web::ServiceConfig) {
             .route("/", web::post().to(post_new_tutor))
             .route("/", web::get().to(get_all_tutors))
             .route("/{tutor_id}", web::get().to(get_tutor_details))
-            .route("/{tuto_id}", web::put().to(update_tutor_details))
+            .route("/{tutor_id}", web::put().to(update_tutor_details))
             .route("/{tutor_id}", web::delete().to(delete_tutor)),
     );
 }
