@@ -2395,6 +2395,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "tutor-web-app"
+version = "0.1.0"
+
+[[package]]
 name = "tutor-web-service"
 version = "0.1.0"
 

@@ -2,6 +2,7 @@
 members = [ 
     "tutor-db",
     "tutor-nodb", 
+    "tutor-web-app", 
     "tutor-web-service"
 ]
 resolver = "3"
