@@ -4,3 +4,17 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+actix-web = "4.11.0"
+actix-rt = "2.11.0"
+actix-cors = "0.7.0"
+chrono = { version = "0.4.42", features = ["serde"] }
+dotenv = "0.15.0"
+env_logger = "0.11.8"
+log = "0.4.28"
+openssl = { version = "0.10.73", features = ["vendored"] }
+sqlx = { version = "0.8.6", default-features = false, features = ["postgres","runtime-tokio-native-tls", "macros","chrono"]}
+serde = { version = "1.0.225", features = ["derive"] }
+
+[[bin]]
+name = "tutor"
+path = "src/main.rs"
