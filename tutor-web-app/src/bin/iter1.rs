@@ -12,7 +12,7 @@ async fn main() -> std::io::Result<()> {
         let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/**/**"))
             .expect("Error initializing tera template");
         let tera_wrap = web::Data::new(tera);
-        
+
         App::new()
             .app_data(tera_wrap.clone())
             .service(fs::Files::new("/static", "./static").show_files_listing())
