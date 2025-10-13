@@ -51,3 +51,26 @@ fn app_config(cfg: &mut web::ServiceConfig) {
             .service(web::resource("/tutors").route(web::post().to(handle_post_tutor))),
     );
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use actix_web::http::header::HeaderValue;
+    use actix_web::http::{header::CONTENT_TYPE, StatusCode};
+    use actix_web::web::Form;
+
+    #[actix_rt::test]
+    async fn handle_post_1_unit_test() {
+        let params = Form(Tutor {
+            name: "Terry".to_string()
+        });
+        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/iter2/**/*")).unwrap();
+        let webdata_tera = web::Data::new(tera);
+
+        let res = handle_post_tutor(webdata_tera, params).await.unwrap();
+
+        assert_eq!(res.status(), StatusCode::OK);
+        assert_eq!(res.headers().get(CONTENT_TYPE).unwrap(), HeaderValue::from_static("text/html")) 
+    }
+}
