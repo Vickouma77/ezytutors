@@ -34,7 +34,8 @@ async fn main() -> std::io::Result<()> {
     println!("Listening on 127.0.0.1:8000");
     HttpServer::new(|| {
         let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/iter2/**/*")).unwrap();
-        App::new().app_data(tera).configure(app_config)
+        
+        App::new().app_data(web::Data::new(tera)).configure(app_config)
     })
     .bind("127.0.0.1:8000")?
     .run()
@@ -45,6 +46,6 @@ fn app_config(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("")
             .service(web::resource("/").route(web::get().to(index)))
-            .service(web::resource("/tutors").route(web::get().to(handle_post_tutor))),
+            .service(web::resource("/tutors").route(web::post().to(handle_post_tutor))),
     );
 }
