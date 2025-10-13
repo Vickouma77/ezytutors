@@ -9,7 +9,7 @@ async fn main() -> std::io::Result<()> {
     let addr = env::var("SERVER_ADDR").unwrap_or_else(|_| "127.0.0.1:8000".to_string());
     println!("Listening on: {}, open browser and visit have a try!", addr);
     HttpServer::new(|| {
-        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/**/**"))
+        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/iter1/**/*"))
             .expect("Error initializing tera template");
         let tera_wrap = web::Data::new(tera);
 

@@ -34,8 +34,10 @@ async fn main() -> std::io::Result<()> {
     println!("Listening on 127.0.0.1:8000");
     HttpServer::new(|| {
         let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/iter2/**/*")).unwrap();
-        
-        App::new().app_data(web::Data::new(tera)).configure(app_config)
+
+        App::new()
+            .app_data(web::Data::new(tera))
+            .configure(app_config)
     })
     .bind("127.0.0.1:8000")?
     .run()
