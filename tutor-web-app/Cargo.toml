@@ -7,7 +7,9 @@ edition = "2024"
 actix-web = "4.11.0"
 actix-files = "0.6.8"
 actix-rt = "2.11.0"
+awc = "3.8.1"
 serde = { version = "1.0.225", features = ["derive"] }
+serde_json = "1.0.145"
 tera = "1.20.0"
 
 
@@ -22,3 +24,7 @@ path = "src/bin/iter2.rs"
 [[bin]]
 name = "iter3"
 path = "src/bin/iter3.rs"
+
+[[bin]]
+name = "iter4"
+path = "src/bin/iter4.rs"
