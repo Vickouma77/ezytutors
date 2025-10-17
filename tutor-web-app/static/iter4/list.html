@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <h1 class="text-2xl font-bold mt-8 mb-5">Tutors list</h1>
+    <ul class="list-disc list-inside my-5 pl-2">
+        {% for tutor in tutors %}
+        <ol class="list-decimal list-inside my-5 pl-2">
+            <h5 class="text-1xl font-bold mb-4 mt-0">{{tutor.tutor_name}}</h5>
+        </ol>
+        {% endfor %}
+    </ul>
+</body>
+</html>

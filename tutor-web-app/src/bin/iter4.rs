@@ -48,7 +48,7 @@ async fn main() -> std::io::Result<()> {
     let addr = env::var("SERVER_ADDR").unwrap_or_else(|_| "127.0.0.1:8000".to_string());
     println!("Listening on {}", addr);
     HttpServer::new(|| {
-        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/iter3/**/*")).unwrap();
+        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/iter4/**/*")).unwrap();
 
         App::new()
             .app_data(web::Data::new(tera))
