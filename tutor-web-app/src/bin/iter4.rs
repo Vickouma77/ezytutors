@@ -20,7 +20,7 @@ async fn handle_get_tutors(tmpl: web::Data<tera::Tera>) -> Result<HttpResponse, 
 
     //Request builder
     let res = client
-        .get("http:://localhost:3000/tutors/")
+        .get("http://localhost:3000/tutors/")
         .send()
         .await
         .unwrap()
