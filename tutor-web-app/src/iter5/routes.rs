@@ -1,3 +1,4 @@
+use crate::iter5::{handle_register, show_register_form};
 use actix_files as fs;
 use actix_web::web;
 
@@ -6,6 +7,6 @@ pub fn app_config(cfg: &mut web::ServiceConfig) {
         web::scope("")
             .service(fs::Files::new("/static", "./static").show_files_listing())
             .service(web::resource("/").route(web::get().to(show_register_form)))
-            .service(web::resource("/register").route(web::get().to(handle_register)))
+            .service(web::resource("/register").route(web::get().to(handle_register))),
     );
 }

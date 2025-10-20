@@ -1,9 +1,11 @@
-mod routes;
-mod model;
-mod state;
 mod errors;
+mod handler;
+mod model;
+mod routes;
+mod state;
 
 pub use errors::*;
-pub use routes::*;
+pub use handler::*;
 pub use model::*;
+pub use routes::*;
 pub use state::*;
