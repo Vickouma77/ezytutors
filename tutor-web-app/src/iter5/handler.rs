@@ -55,31 +55,44 @@ pub async fn handle_register(
                 "tutor_profile": &params.profile
             });
             let awc_client = awc::Client::default();
-            let res = awc_client
+            let mut response = awc_client
                 .post("http://localhost:3000/tutors/")
                 .send_json(&new_tutor)
                 .await
-                .unwrap()
-                .body()
-                .await?;
+                .unwrap();
 
-            let tutor_response: TutorResponse = serde_json::from_str(&std::str::from_utf8(&res)?)?;
-            s = format!(
-                "Congratulations. You have been successfully registered with EzyTutor and your tutor id is: {}. To start using EzyTutor, please login with your credentials.",
-                tutor_response.tutor_id
-            );
+            if response.status().is_success() {
+                let res = response.body().await?;
+                let tutor_response: TutorResponse = serde_json::from_str(&std::str::from_utf8(&res)?)?;
+                s = format!(
+                    "Congratulations. You have been successfully registered with EzyTutor and your tutor id is: {}. To start using EzyTutor, please login with your credentials.",
+                    tutor_response.tutor_id
+                );
 
-            //Hash the password
-            let salt = b"somerandomsalt";
-            let config = Config::default();
-            let hash =
-                argon2::hash_encoded(params.password.clone().as_bytes(), salt, &config).unwrap();
-            let user = User {
-                username,
-                tutor_id: Some(tutor_response.tutor_id),
-                user_password: hash,
-            };
-            let _tutor_created = post_new_user(&app_state.db, user).await?;
+                //Hash the password
+                let salt = b"somerandomsalt";
+                let config = Config::default();
+                let hash =
+                    argon2::hash_encoded(params.password.clone().as_bytes(), salt, &config).unwrap();
+                let user = User {
+                    username,
+                    tutor_id: Some(tutor_response.tutor_id),
+                    user_password: hash,
+                };
+                let _tutor_created = post_new_user(&app_state.db, user).await?;
+            } else {
+                ctx.insert("error", "Failed to register tutor. Please try again.");
+                ctx.insert("current_username", &params.username);
+                ctx.insert("current_password", "");
+                ctx.insert("current_confirmation", "");
+                ctx.insert("current_name", &params.name);
+                ctx.insert("current_imageurl", &params.imageurl);
+                ctx.insert("current_profile", &params.profile);
+
+                s = tmpl
+                    .render("register.html", &ctx)
+                    .map_err(|_| EzyTutorError::TeraError("Template error".to_string()))?;
+            }
         }
     } else {
         ctx.insert("error", "User Id already exists");
