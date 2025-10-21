@@ -7,7 +7,7 @@ pub async fn show_register_form(tmpl: web::Data<tera::Tera>) -> Result<HttpRespo
     ctx.insert("error", "");
     ctx.insert("current_username", "");
     ctx.insert("current_password", "");
-    ctx.insert("current_confermation", "");
+    ctx.insert("current_confirmation", "");
     ctx.insert("current_name", "");
     ctx.insert("current_imageurl", "");
     ctx.insert("current_profile", "");

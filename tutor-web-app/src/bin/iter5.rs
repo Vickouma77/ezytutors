@@ -1,4 +1,5 @@
-use actix_web::{App, HttpServer, web};
+use actix_files as fs;
+use actix_web::{web, App, HttpServer};
 use dotenv::dotenv;
 use iter5::iter5::{AppState, app_config};
 use sqlx::PgPool;
@@ -19,8 +20,9 @@ async fn main() -> std::io::Result<()> {
         let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/iter5/**/*")).unwrap();
         App::new()
             .app_data(shared_data.clone())
-            .app_data(tera)
+            .app_data(web::Data::new(tera))
             .app_data(shared_data.clone())
+            .service(fs::Files::new("/static", "static/").show_files_listing())
             .configure(app_config)
     })
     .bind(&host_port)?
