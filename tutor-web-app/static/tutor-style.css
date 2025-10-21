@@ -1,40 +1,47 @@
 .header {
     padding: 20px;
     text-align: center;
-    background: #fad980;
+    background: linear-gradient(135deg, #fad980, #f39c12);
     color: rgb(48, 40, 43);
     font-size: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInDown 1s ease-out;
 }
 
 .center {
     margin: auto;
-    width: 20%;
-    min-width: 150px;
+    width: 50%;
+    max-width: 500px;
+    min-width: 300px;
     border: 3px solid #ad5921;
-    padding: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 1s ease-out 0.5s both;
 }
 
 body,
 html {
     height: 100%;
     margin: 0;
+    font-family: 'Arial', sans-serif;
     font-kerning: normal;
+    scroll-behavior: smooth;
 }
 
 h1 {
     text-align: center;
+    margin: 0;
 }
 
 p {
     text-align: center;
+    font-size: 18px;
 }
 
 div {
     text-align: center;
-}
-
-div {
-    background-color: rgba(241, 235, 235, 0.719);
 }
 
 body {
@@ -42,7 +49,8 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
-    height: 500px;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 #button1,
@@ -50,12 +58,141 @@ body {
     display: inline-block;
 }
 
+form {
+    animation: slideIn 1s ease-out 1s both;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #ad5921;
+    outline: none;
+    box-shadow: 0 0 5px rgba(173, 89, 33, 0.5);
+}
+
 #footer {
     position: fixed;
     padding: 10px 10px 0px 10px;
     bottom: 0;
     width: 100%;
-    /* Height of the footer*/
     height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+}
 
+/* New styles for improved form */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.error-message {
+    margin-top: 10px;
+}
+
+.button-group {
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #45a049, #4CAF50);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #2196F3, #1976D2);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #1976D2, #2196F3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

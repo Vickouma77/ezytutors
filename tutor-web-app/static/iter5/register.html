@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../tutor-style.css">
-    <title>Document</title>
+    <title>Tutor Registration - EzyTutor</title>
 </head>
 <body>
     <div class="header">
@@ -12,33 +12,43 @@
         <p>Start your own online tutor business in a few minutes</p>
     </div>
     <div class="center">
-        <h2>
-            Tutor registration
-        </h2>
-        <form action=/register method=POST id="registerform">
-            <label for="userid">Enter username</label><br>
-            <input type="text" name="username" value="{{current_username}}" autocomplete="username" minlength="6"
-                maxlength="12" required><br>
-            <label for="password">Enter password</label><br>
-            <input type="password" name="password" value="{{current_password}}" autocomplete="new-password"
-                minlength="8" maxlength="12" required><br>
-            <label for="confirm">Confirm password</label><br>
-            <input type="password" name="confirmation" value="{{current_confirmation}}" autocomplete="new-password"
-                minlength="8" maxlength="12" required><br>
-            <label for="userid">Enter tutor name</label><br>
-            <input type="text" name="name" value="{{current_name}}" maxlength="12" required><br>
-            <label for="imageurl">Enter tutor image url</label><br>
-            <input type="text" name="imageurl" value="{{current_imageurl}}" maxlength="30"><br>
-            <label for="profile">Brief tutor profile</label><br>
-            <input type="text" name="profile" value="{{current_profile}}" maxlength="40"><br>
-            <label for="error">
+        <h2>Tutor Registration</h2>
+        <form action="/register" method="POST" id="registerform" class="registration-form">
+            <div class="form-group">
+                <label for="username">Enter username</label>
+                <input type="text" name="username" id="username" value="{{current_username}}" autocomplete="username" minlength="6" maxlength="12" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Enter password</label>
+                <input type="password" name="password" id="password" value="{{current_password}}" autocomplete="new-password" minlength="8" maxlength="12" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm">Confirm password</label>
+                <input type="password" name="confirmation" id="confirm" value="{{current_confirmation}}" autocomplete="new-password" minlength="8" maxlength="12" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Enter tutor name</label>
+                <input type="text" name="name" id="name" value="{{current_name}}" maxlength="12" required>
+            </div>
+            <div class="form-group">
+                <label for="imageurl">Enter tutor image url</label>
+                <input type="text" name="imageurl" id="imageurl" value="{{current_imageurl}}" maxlength="30">
+            </div>
+            <div class="form-group">
+                <label for="profile">Brief tutor profile</label>
+                <input type="text" name="profile" id="profile" value="{{current_profile}}" maxlength="40">
+            </div>
+            <div class="error-message">
                 <p style="color:red">{{error}}</p>
-            </label>
-            <br>
-            <button type=submit id="button1">Register</button>
+            </div>
+            <div class="button-group">
+                <button type="submit" id="button1" class="btn btn-primary">Register</button>
+            </div>
         </form>
-        <form action=/signinform method=GET>
-            <button type=submit id="button2">Sign in</button>
+        <form action="/signinform" method="GET" class="signin-form">
+            <div class="button-group">
+                <button type="submit" id="button2" class="btn btn-secondary">Sign in</button>
+            </div>
         </form>
     </div>
 </body>
