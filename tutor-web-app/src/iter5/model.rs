@@ -5,6 +5,7 @@ pub struct TutorRegisterForm {
     pub username: String,
     pub password: String,
     pub confirmation: String,
+    pub name: String,
     pub imageurl: String,
     pub profile: String,
 }
