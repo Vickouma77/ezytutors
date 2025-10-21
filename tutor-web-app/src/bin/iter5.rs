@@ -1,5 +1,5 @@
 use actix_files as fs;
-use actix_web::{web, App, HttpServer};
+use actix_web::{App, HttpServer, web};
 use dotenv::dotenv;
 use iter5::iter5::{AppState, app_config};
 use sqlx::PgPool;
