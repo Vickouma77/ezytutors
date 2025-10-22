@@ -42,5 +42,5 @@ name = "iter6"
 path = "src/bin/iter6.rs"
 
 [lib]
-name = "iter5"
+name = "tutor_web_app"
 path = "src/lib.rs"
