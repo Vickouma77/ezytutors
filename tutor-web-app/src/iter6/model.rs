@@ -24,3 +24,9 @@ pub struct User {
     pub tutor_id: Option<i32>,
     pub user_password: String,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct TutorSigninForm {
+    pub username: String,
+    pub password: String,
+}
