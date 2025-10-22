@@ -37,6 +37,10 @@ path = "src/bin/iter4.rs"
 name = "iter5"
 path = "src/bin/iter5.rs"
 
+[[bin]]
+name = "iter6"
+path = "src/bin/iter6.rs"
+
 [lib]
 name = "iter5"
 path = "src/lib.rs"
