@@ -3,7 +3,8 @@ use argon2::Config;
 use serde_json::json;
 
 use crate::iter6::{
-    get_user_record_pool, post_new_user, AppState, EzyTutorError, TutorRegisterForm, TutorResponse, TutorSigninForm, User
+    AppState, EzyTutorError, TutorRegisterForm, TutorResponse, TutorSigninForm, User,
+    get_user_record_pool, post_new_user,
 };
 
 pub async fn show_register_form(tmpl: web::Data<tera::Tera>) -> Result<HttpResponse, Error> {
@@ -136,7 +137,6 @@ pub async fn handle_signin(
 
     // check if user exists
     if let Ok(user) = user {
-
         // verify password
         let does_password_match = argon2::verify_encoded(
             &user.user_password.trim(),

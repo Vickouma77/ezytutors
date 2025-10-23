@@ -4,7 +4,7 @@ use dotenv::dotenv;
 use sqlx::PgPool;
 use std::env;
 use tera::Tera;
-use tutor_web_app::iter6::{app_config, course_config, AppState};
+use tutor_web_app::iter6::{AppState, app_config, course_config};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

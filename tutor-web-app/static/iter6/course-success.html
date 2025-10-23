@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/tutor-style.css">
+    <title>Course Added - EzyTutor</title>
+</head>
+<body>
+    <div class="header">
+        <h1>EzyTutor Course Management</h1>
+        <p>Course successfully created</p>
+    </div>
+    <div class="center">
+        <h2>{{title}}</h2>
+        <div class="success-message">
+            <p style="color: green; font-size: 18px; margin: 20px 0;">{{message}}</p>
+        </div>
+        <div class="course-details">
+            <h3>Course Details:</h3>
+            <table style="width: 100%; margin: 20px 0; text-align: left;">
+                <tr>
+                    <td style="padding: 8px; font-weight: bold;">Course ID:</td>
+                    <td style="padding: 8px;">{{course_id}}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; font-weight: bold;">Course Name:</td>
+                    <td style="padding: 8px;">{{course_name}}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; font-weight: bold;">Description:</td>
+                    <td style="padding: 8px;">{{course_description}}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; font-weight: bold;">Format:</td>
+                    <td style="padding: 8px;">{{course_format}}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; font-weight: bold;">Duration:</td>
+                    <td style="padding: 8px;">{{course_duration}}</td>
+                </tr>
+                {% if course_price %}
+                <tr>
+                    <td style="padding: 8px; font-weight: bold;">Price:</td>
+                    <td style="padding: 8px;">${{course_price}}</td>
+                </tr>
+                {% endif %}
+                {% if course_language %}
+                <tr>
+                    <td style="padding: 8px; font-weight: bold;">Language:</td>
+                    <td style="padding: 8px;">{{course_language}}</td>
+                </tr>
+                {% endif %}
+                {% if course_level %}
+                <tr>
+                    <td style="padding: 8px; font-weight: bold;">Level:</td>
+                    <td style="padding: 8px;">{{course_level}}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td style="padding: 8px; font-weight: bold;">Posted:</td>
+                    <td style="padding: 8px;">{{posted_time}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="button-group">
+            <button type="button" id="button1" class="btn btn-primary" onclick="location.href='/courses/new/{{tutor_id}}'">Add Another Course</button>
+            <button type="button" id="button2" class="btn btn-secondary" onclick="location.href='/'">Go to Home</button>
+        </div>
+    </div>
+</body>
+</html>

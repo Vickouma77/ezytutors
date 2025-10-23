@@ -1,4 +1,7 @@
-use crate::iter6::{handle_delete_course, handle_insert_course, handle_register, handle_signin, handle_update_course, show_register_form, show_signin_form};
+use crate::iter6::{
+    handle_delete_course, handle_insert_course, handle_register, handle_signin,
+    handle_update_course, show_new_course_form, show_register_form, show_signin_form,
+};
 use actix_files as fs;
 use actix_web::web;
 
@@ -16,8 +19,17 @@ pub fn app_config(cfg: &mut web::ServiceConfig) {
 pub fn course_config(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/courses")
-            .service(web::resource("new/{tutor_id}").route(web::post().to(handle_insert_course)))
-            .service(web::resource("{tutor_id}/{course_id}").route(web::put().to(handle_update_course)))
-            .service(web::resource("delete/{tutor_id}/{course_id}").route(web::delete().to(handle_delete_course))),
+            .service(
+                web::resource("/new/{tutor_id}")
+                    .route(web::get().to(show_new_course_form))
+                    .route(web::post().to(handle_insert_course)),
+            )
+            .service(
+                web::resource("/{tutor_id}/{course_id}").route(web::put().to(handle_update_course)),
+            )
+            .service(
+                web::resource("/delete/{tutor_id}/{course_id}")
+                    .route(web::delete().to(handle_delete_course)),
+            ),
     );
 }
