@@ -17,11 +17,11 @@ async fn main() -> std::io::Result<()> {
     let shared_data = web::Data::new(AppState { db: db_pool });
 
     HttpServer::new(move || {
-        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/iter5/**/*")).unwrap();
+        let tera = Tera::new(concat!(env!("CARGO_MANIFEST_DIR"), "/static/iter6/**/*"))
+            .expect("Failed to initialize Tera templates");
         App::new()
             .app_data(shared_data.clone())
             .app_data(web::Data::new(tera))
-            .app_data(shared_data.clone())
             .service(fs::Files::new("/static", "static/").show_files_listing())
             .configure(app_config)
     })

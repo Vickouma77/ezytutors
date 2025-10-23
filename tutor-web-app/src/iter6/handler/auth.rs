@@ -116,9 +116,8 @@ pub async fn handle_register(
 pub async fn show_signin_form(tmpl: web::Data<tera::Tera>) -> Result<HttpResponse, Error> {
     let mut ctx = tera::Context::new();
     ctx.insert("error", "");
-    ctx.insert("current_name", "");
+    ctx.insert("current_username", "");
     ctx.insert("current_password", "");
-
     let s = tmpl
         .render("signin.html", &ctx)
         .map_err(|_| EzyTutorError::TeraError("Template error".to_string()))?;
@@ -127,9 +126,9 @@ pub async fn show_signin_form(tmpl: web::Data<tera::Tera>) -> Result<HttpRespons
 }
 
 pub async fn handle_signin(
-    tmp: web::Data<tera::Tera>, 
-    app_state: web::Data<AppState>, 
-    params: web::Form<TutorRegisterForm>
+    _tmp: web::Data<tera::Tera>, 
+    _app_state: web::Data<AppState>, 
+    _params: web::Form<TutorRegisterForm>
 ) -> Result<HttpResponse, Error> {
     Ok(HttpResponse::Ok().finish())
 }
