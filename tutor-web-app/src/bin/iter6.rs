@@ -4,7 +4,7 @@ use dotenv::dotenv;
 use sqlx::PgPool;
 use std::env;
 use tera::Tera;
-use tutor_web_app::iter6::{AppState, app_config};
+use tutor_web_app::iter6::{app_config, course_config, AppState};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -23,6 +23,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(shared_data.clone())
             .app_data(web::Data::new(tera))
             .service(fs::Files::new("/static", "static/").show_files_listing())
+            .configure(course_config)
             .configure(app_config)
     })
     .bind(&host_port)?

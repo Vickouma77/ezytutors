@@ -12,3 +12,12 @@ pub fn app_config(cfg: &mut web::ServiceConfig) {
             .service(web::resource("/register").route(web::post().to(handle_register))),
     );
 }
+
+pub fn course_config(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/courses")
+            .service(web::resource("new/{tutor_id}").route(web::post().to(handle_insert_course)))
+            .service(web::resource("{tutor_id}/{course_id}").route(web::put().to(handle_update_course)))
+            .service(web::resource("delete/{tutor_id}/{course_id}").route(web::delete().to(handle_delete_course))),
+    );
+}
