@@ -125,3 +125,11 @@ pub async fn show_signin_form(tmpl: web::Data<tera::Tera>) -> Result<HttpRespons
 
     Ok(HttpResponse::Ok().content_type("text/html").body(s))
 }
+
+pub async fn handle_signin(
+    tmp: web::Data<tera::Tera>, 
+    app_state: web::Data<AppState>, 
+    params: web::Form<TutorRegisterForm>
+) -> Result<HttpResponse, Error> {
+    Ok(HttpResponse::Ok().finish())
+}
