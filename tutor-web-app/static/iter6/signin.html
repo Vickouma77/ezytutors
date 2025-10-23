@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/tutor-style.css">
+    <title>Tutor Sign In - EzyTutor</title>
+</head>
+<body>
+    <div class="header">
+        <h1>Welcome to EzyTutor</h1>
+        <p>Start your own online tutor business in a few minutes</p>
+    </div>
+    <div class="center">
+        <h2>Tutor Sign In</h2>
+        <form action="/signin" method="POST" id="signin-form" class="signin-form">
+            <div class="form-group">
+                <label for="username">Enter username</label>
+                <input type="text" name="username" id="username" value="{{current_username}}" autocomplete="username" minlength="6" maxlength="12" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Enter password</label>
+                <input type="password" name="password" id="password" value="{{current_password}}" autocomplete="current-password" minlength="8" maxlength="12" required>
+            </div>
+            <div class="error-message">
+                <p style="color:red">{{error}}</p>
+            </div>
+            <div class="button-group">
+                <button type="submit" id="button1" class="btn btn-primary">Sign in</button>
+            </div>
+        </form>
+        <form action="/" method="GET" class="register-form">
+            <div class="button-group">
+                <button type="submit" id="button2" class="btn btn-secondary">Register</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
