@@ -3,8 +3,7 @@ use argon2::Config;
 use serde_json::json;
 
 use crate::iter6::{
-    AppState, EzyTutorError, TutorRegisterForm, TutorResponse, User, get_user_record_pool,
-    post_new_user,
+    get_user_record_pool, post_new_user, AppState, EzyTutorError, TutorRegisterForm, TutorResponse, TutorSigninForm, User
 };
 
 pub async fn show_register_form(tmpl: web::Data<tera::Tera>) -> Result<HttpResponse, Error> {
@@ -126,9 +125,56 @@ pub async fn show_signin_form(tmpl: web::Data<tera::Tera>) -> Result<HttpRespons
 }
 
 pub async fn handle_signin(
-    _tmp: web::Data<tera::Tera>, 
-    _app_state: web::Data<AppState>, 
-    _params: web::Form<TutorRegisterForm>
+    tmpl: web::Data<tera::Tera>,
+    app_state: web::Data<AppState>,
+    params: web::Form<TutorSigninForm>,
 ) -> Result<HttpResponse, Error> {
-    Ok(HttpResponse::Ok().finish())
+    let mut ctx = tera::Context::new();
+    let s;
+    let username = params.username.clone();
+    let user = get_user_record_pool(&app_state.db, username.to_string()).await;
+
+    // check if user exists
+    if let Ok(user) = user {
+
+        // verify password
+        let does_password_match = argon2::verify_encoded(
+            &user.user_password.trim(),
+            params.password.clone().as_bytes(),
+        )
+        .unwrap();
+
+        // if password does not match
+        if !does_password_match {
+            ctx.insert("error", "Invalid login");
+            ctx.insert("current_username", &params.username);
+            ctx.insert("current_password", "");
+
+            // render signin form again
+            s = tmpl
+                .render("signin.html", &ctx)
+                .map_err(|_| EzyTutorError::TeraError("Template error".to_string()))?;
+        } else {
+            ctx.insert("name", &params.username);
+            ctx.insert("title", &"Signin confirmation!".to_owned());
+            ctx.insert(
+                "message",
+                &"You have successfully logged in to EzyTutor!".to_owned(),
+            );
+
+            s = tmpl
+                .render("user.html", &ctx)
+                .map_err(|_| EzyTutorError::TeraError("Template error".to_string()))?;
+        }
+    } else {
+        ctx.insert("error", "User id not found");
+        ctx.insert("current_username", &params.username);
+        ctx.insert("current_password", "");
+
+        s = tmpl
+            .render("signin.html", &ctx)
+            .map_err(|_| EzyTutorError::TeraError("Template error".to_string()))?;
+    }
+
+    Ok(HttpResponse::Ok().content_type("text/html").body(s))
 }
