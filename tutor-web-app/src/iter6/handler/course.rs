@@ -21,6 +21,5 @@ pub async fn handle_delete_course(
     _tmpl: web::Data<tera::Tera>,
     _app_state: web::Data<AppState>,
 ) -> Result<HttpResponse, Error>{
-    println!("Got insert request");
     Ok(HttpResponse::Ok().body("Got delete request"))
 }
