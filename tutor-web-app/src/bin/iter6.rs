@@ -2,9 +2,9 @@ use actix_files as fs;
 use actix_web::{App, HttpServer, web};
 use dotenv::dotenv;
 use sqlx::PgPool;
-use tutor_web_app::iter6::{app_config, AppState};
 use std::env;
 use tera::Tera;
+use tutor_web_app::iter6::{AppState, app_config};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
