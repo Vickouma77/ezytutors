@@ -1,4 +1,4 @@
-use crate::iter6::{handle_register, handle_signin, show_register_form, show_signin_form};
+use crate::iter6::{handle_delete_course, handle_insert_course, handle_register, handle_signin, handle_update_course, show_register_form, show_signin_form};
 use actix_files as fs;
 use actix_web::web;
 
