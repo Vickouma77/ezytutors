@@ -1,7 +1,7 @@
 use actix_web::{Error, HttpResponse, web};
 use serde_json::json;
 
-use crate::iter6::{AppState, EzyTutorError, NewCourse, NewCourseResponse, UpdateCourse};
+use crate::iter6::{AppState, EzyTutorError, NewCourse, NewCourseResponse, UpdateCourse, UpdateCourseResponse};
 
 pub async fn show_new_course_form(
     tmpl: web::Data<tera::Tera>,
@@ -116,9 +116,35 @@ pub async fn handle_insert_course(
 pub async fn handle_update_course(
     _tmpl: web::Data<tera::Tera>,
     _app_state: web::Data<AppState>,
+    path: web::Path<(i32, i32)>,
     params: web::Json<UpdateCourse>,
 ) -> Result<HttpResponse, Error> {
-    Ok(HttpResponse::Ok().body("Got update request"))
+    let (tutor_id, course_id) = path.into_inner();
+    let update_course = json!({
+        "course_name": &params.course_name,
+        "course_description": &params.course_description,
+        "course_format": &params.course_format,
+        "course_duration": &params.course_duration,
+        "course_structure": &params.course_structure,
+        "course_price": &params.course_price,
+        "course_language": &params.course_language,
+        "course_level": &params.course_level,
+    });
+
+    let awc_client = awc::Client::default();
+    let update_url = format!("http://localhost:3000/courses/{}/{}", tutor_id, course_id);
+
+    let res = awc_client
+        .put(update_url)
+        .send_json(&update_course)
+        .await
+        .unwrap()
+        .body()
+        .await?;
+
+    let course_response: UpdateCourseResponse = serde_json::from_str(&std::str::from_utf8(&res)?)?;
+
+    Ok(HttpResponse::Ok().json(course_response))
 }
 
 pub async fn handle_delete_course(
