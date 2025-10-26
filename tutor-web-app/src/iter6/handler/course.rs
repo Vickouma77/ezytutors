@@ -1,7 +1,9 @@
 use actix_web::{Error, HttpResponse, web};
 use serde_json::json;
 
-use crate::iter6::{AppState, EzyTutorError, NewCourse, NewCourseResponse, UpdateCourse, UpdateCourseResponse};
+use crate::iter6::{
+    AppState, EzyTutorError, NewCourse, NewCourseResponse, UpdateCourse, UpdateCourseResponse,
+};
 
 pub async fn show_new_course_form(
     tmpl: web::Data<tera::Tera>,
