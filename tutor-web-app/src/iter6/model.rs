@@ -76,3 +76,48 @@ impl From<web::Json<NewCourseResponse>> for NewCourseResponse {
         }
     }
 }
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct UpdateCourse {
+    pub course_name: Option<String>,
+    pub course_description: Option<String>,
+    pub course_format: Option<String>,
+    pub course_duration: Option<String>,
+    pub course_structure: Option<String>,
+    pub course_price: Option<i32>,
+    pub course_language: Option<String>,
+    pub course_level: Option<String>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct UpdateCourseResponse {
+    pub course_id: i32,
+    pub tutor_id: i32,
+    pub course_name: String,
+    pub course_description: String,
+    pub course_format: String,
+    pub course_structure: String,
+    pub course_duration: String,
+    pub course_price: i32,
+    pub course_language: String,
+    pub course_level: String,
+    pub posted_time: String,
+}
+
+impl From<web::Json<UpdateCourseResponse>> for UpdateCourseResponse {
+    fn from(new_course: web::Json<UpdateCourseResponse>) -> Self {
+        UpdateCourseResponse {
+            tutor_id: new_course.tutor_id,
+            course_id: new_course.course_id,
+            course_name: new_course.course_name.clone(),
+            course_description: new_course.course_description.clone(),
+            course_format: new_course.course_format.clone(),
+            course_structure: new_course.course_structure.clone(),
+            course_duration: new_course.course_duration.clone(),
+            course_price: new_course.course_price,
+            course_language: new_course.course_language.clone(),
+            course_level: new_course.course_level.clone(),
+            posted_time: new_course.posted_time.clone(),
+        }
+    }
+}
